@@ -40,10 +40,14 @@ $syncGroupName = "SampleSyncGroup"
 Get-AzSqlSyncGroup -ResourceGroupName $resourceGroup `
     -ServerName $serverName `
     -DatabaseName $databaseName `
-    -SyncGroupName $syncGroupName
+    -SyncGroupName $syncGroupName | Format-List
 ```
 
-### Get Sync Group Logs (Including Errors)
+> **Note:** The `LastSyncTime` property from `Get-AzSqlSyncGroup` may show `1/1/0001` even when syncs are completing successfully. Use `Get-AzSqlSyncGroupLog` to get accurate sync timestamps.
+
+### Get Sync Group Logs (Recommended for Monitoring)
+
+Use `Get-AzSqlSyncGroupLog` to monitor sync activity. This provides accurate timestamps and detailed sync status.
 
 ```powershell
 # Get sync logs for the last 24 hours
@@ -56,6 +60,23 @@ Get-AzSqlSyncGroupLog -ResourceGroupName $resourceGroup `
     -SyncGroupName $syncGroupName `
     -StartTime $startTime `
     -EndTime $endTime
+```
+
+### Get Last Successful Sync Time
+
+```powershell
+# Get the most recent successful sync timestamp
+$startTime = (Get-Date).AddDays(-7).ToString("yyyy-MM-ddTHH:mm:ssZ")
+$endTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+
+Get-AzSqlSyncGroupLog -ResourceGroupName $resourceGroup `
+    -ServerName $serverName `
+    -DatabaseName $databaseName `
+    -SyncGroupName $syncGroupName `
+    -StartTime $startTime `
+    -EndTime $endTime |
+    Where-Object { $_.Details -like "*completed*" -or $_.Type -eq "Success" } |
+    Select-Object -First 1 Timestamp, Type, Details
 ```
 
 ### Filter for Errors Only

@@ -5,6 +5,9 @@
     "ghcr.io/devcontainers/features/azure-cli:1": {
       "installBicep": true,
       "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
     }
   },
   "customizations": {
@@ -12,9 +15,10 @@
       "extensions": [
         "ms-azuretools.vscode-bicep",
         "ms-azuretools.vscode-azureresourcegroups",
-        "ms-mssql.mssql"
+        "ms-mssql.mssql",
+        "ms-vscode.powershell"
       ]
     }
   },
-  "postCreateCommand": "az --version"
+  "postCreateCommand": "pwsh -c 'Install-Module -Name Az.Sql -Repository PSGallery -Force -Scope CurrentUser' && az --version && pwsh --version"
 }
