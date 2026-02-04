@@ -1,0 +1,20 @@
+{
+  "name": "Azure SQL Data Sync",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {
+      "installBicep": true,
+      "version": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-bicep",
+        "ms-azuretools.vscode-azureresourcegroups",
+        "ms-mssql.mssql"
+      ]
+    }
+  },
+  "postCreateCommand": "az --version"
+}
