@@ -97,15 +97,6 @@ The sync schema must be configured via Azure Portal:
 5. Select the tables to sync: `Customers`, `Products`, `Orders`
 6. Click **Save** and wait for provisioning
 
-### 5️⃣ Trigger Synchronization
-
-```bash
-az sql sync-group trigger-sync \
-    --resource-group rg-datasync-demo \
-    --server <hub-server-name> \
-    --database HubDatabase \
-    --name SampleSyncGroup
-```
 
 ---
 
@@ -154,11 +145,11 @@ az sql sync-group trigger-sync \
 
 ```bash
 # Set variables
-SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-RG="rg-datasync-demo"
-SERVER="<hub-server-name>"
-DB="HubDatabase"
-SYNC_GROUP="SampleSyncGroup"
+$SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+$RG="rg-datasync-demo"
+$SERVER="<hub-server-name>"
+$DB="HubDatabase"
+$SYNC_GROUP="SampleSyncGroup"
 
 # Get sync group status
 az rest --method GET \
@@ -176,8 +167,9 @@ az rest --method POST \
 ### View Sync Logs
 
 ```bash
-az rest --method GET \
-    --uri "https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RG}/providers/Microsoft.Sql/servers/${SERVER}/databases/${DB}/syncGroups/${SYNC_GROUP}/logs?api-version=2023-05-01-preview&startTime=2024-01-01T00:00:00Z&endTime=2024-12-31T23:59:59Z&type=All"
+az rest --method GET 
+    --uri "https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RG}/providers/Microsoft.Sql/servers/${SERVER}/databases/${DB}/syncGroups/${SYNC_GROUP}/logs" `
+    --url-parameters startTime=2026-01-01T00:00:00Z endTime=2026-02-04T23:59:59Z type=All api-version=2023-05-01-preview
 ```
 
 ### List Sync Members

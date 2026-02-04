@@ -89,7 +89,7 @@ Get-AzSqlSyncGroupLog -ResourceGroupName $resourceGroup `
     -SyncGroupName $syncGroupName `
     -StartTime $startTime `
     -EndTime $endTime | 
-    Where-Object { $_.Type -eq "Error" }
+    Where-Object { $_.LogLevel -eq "Error" }
 ```
 
 ### Get Sync Members
@@ -145,7 +145,7 @@ param(
 )
 
 # Get logs from the last check interval
-$startTime = (Get-Date).AddMinutes(-$CheckIntervalMinutes).ToString("yyyy-MM-ddTHH:mm:ssZ")
+$startTime = (Get-Date).AddHours(-1).ToString("yyyy-MM-ddTHH:mm:ssZ")
 $endTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
 
 $errors = Get-AzSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
@@ -154,7 +154,7 @@ $errors = Get-AzSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
     -SyncGroupName $SyncGroupName `
     -StartTime $startTime `
     -EndTime $endTime | 
-    Where-Object { $_.Type -eq "Error" }
+    Where-Object { $_.LogLevel -eq "Error" }
 
 if ($errors) {
     Write-Host "=== DATA SYNC ERRORS DETECTED ===" -ForegroundColor Red
