@@ -121,6 +121,9 @@ az sql sync-group trigger-sync \
 │   ├── deploy.sh               # Deployment script
 │   ├── sample-schema.sql       # Sample database schema
 │   └── cleanup.sh              # Resource cleanup script
+├── monitoring/
+│   ├── README.md               # PowerShell monitoring guide
+│   └── generate-sync-errors.sql # Script to generate test errors
 ├── LICENSE
 └── README.md
 ```
