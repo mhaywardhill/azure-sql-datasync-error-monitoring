@@ -74,7 +74,7 @@ az login --tenant <tenant-id> --use-device-code
 Add your client IP to access the databases:
 
 ```bash
-MY_IP=$(curl -s ifconfig.me)
+$MY_IP =$(Invoke-RestMethod https://api.ipify.org)
 az sql server firewall-rule create --resource-group rg-datasync-demo --server <hub-server-name> --name AllowMyIP --start-ip-address $MY_IP --end-ip-address $MY_IP
 az sql server firewall-rule create --resource-group rg-datasync-demo --server <member-server-name> --name AllowMyIP --start-ip-address $MY_IP --end-ip-address $MY_IP
 ```
