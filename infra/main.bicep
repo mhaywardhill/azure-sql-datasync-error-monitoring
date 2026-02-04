@@ -1,9 +1,6 @@
 @description('The location for all resources')
 param location string = resourceGroup().location
 
-@description('The administrator login for the SQL servers')
-param sqlAdminLogin string
-
 @secure()
 @description('The administrator password for the SQL servers')
 param sqlAdminPassword string
@@ -25,6 +22,7 @@ param syncIntervalInSeconds int = 300
 param conflictResolutionPolicy string = 'HubWin'
 
 var uniqueSuffix = uniqueString(resourceGroup().id)
+var sqlAdminLogin = 'admin${substring(uniqueString(resourceGroup().id, deployment().name), 0, 8)}'
 var hubServerName = '${namePrefix}-hub-${uniqueSuffix}'
 var memberServerName = '${namePrefix}-member-${uniqueSuffix}'
 var hubDatabaseName = 'HubDatabase'
@@ -157,3 +155,4 @@ output memberDatabaseName string = memberDatabaseName
 output syncGroupName string = syncGroupName
 output hubServerName string = hubServerName
 output memberServerName string = memberServerName
+output sqlAdminLogin string = sqlAdminLogin

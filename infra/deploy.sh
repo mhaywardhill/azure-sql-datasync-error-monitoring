@@ -34,7 +34,6 @@ echo "Deploying Azure SQL Data Sync infrastructure..."
 DEPLOYMENT_OUTPUT=$(az deployment group create \
     --resource-group "$RESOURCE_GROUP" \
     --template-file main.bicep \
-    --parameters sqlAdminLogin='sqladmin' \
     --parameters sqlAdminPassword="$SQL_ADMIN_PASSWORD" \
     --query 'properties.outputs' \
     --output json)
@@ -53,6 +52,7 @@ MEMBER_SERVER_NAME=$(echo "$DEPLOYMENT_OUTPUT" | jq -r '.memberServerName.value'
 HUB_DB=$(echo "$DEPLOYMENT_OUTPUT" | jq -r '.hubDatabaseName.value')
 MEMBER_DB=$(echo "$DEPLOYMENT_OUTPUT" | jq -r '.memberDatabaseName.value')
 SYNC_GROUP=$(echo "$DEPLOYMENT_OUTPUT" | jq -r '.syncGroupName.value')
+SQL_ADMIN=$(echo "$DEPLOYMENT_OUTPUT" | jq -r '.sqlAdminLogin.value')
 
 echo ""
 echo "=== Connection Information ==="
@@ -62,10 +62,10 @@ echo "Member Server: $MEMBER_SERVER"
 echo "Member Database: $MEMBER_DB"
 echo "Sync Group: $SYNC_GROUP"
 echo ""
-echo "SQL Admin: sqladmin"
+echo "SQL Admin: $SQL_ADMIN"
 echo ""
 echo "Connection String (Hub):"
-echo "Server=$HUB_SERVER;Database=$HUB_DB;User Id=sqladmin;Password=<your-password>;Encrypt=True;TrustServerCertificate=False;"
+echo "Server=$HUB_SERVER;Database=$HUB_DB;User Id=$SQL_ADMIN;Password=<your-password>;Encrypt=True;TrustServerCertificate=False;"
 echo ""
 echo "=== Next Steps ==="
 echo ""
@@ -76,5 +76,5 @@ echo "   az sql server firewall-rule create --resource-group $RESOURCE_GROUP --s
 echo ""
 echo "2. Create sample tables by running sample-schema.sql on both databases"
 echo ""
-echo "3. Configure sync schema using configure-sync-schema.sh"
+echo "3. Configure sync schema via Azure Portal"
 echo ""

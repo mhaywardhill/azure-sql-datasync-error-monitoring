@@ -133,12 +133,13 @@ az sql sync-group trigger-sync \
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `sqlAdminLogin` | `sqladmin` | SQL Server admin username |
 | `sqlAdminPassword` | — | SQL Server admin password *(required)* |
 | `namePrefix` | `datasync` | Prefix for resource names |
 | `databaseSkuName` | `Basic` | Database SKU (`Basic`, `Standard`, `Premium`) |
 | `syncIntervalInSeconds` | `300` | Sync interval (`-1` for manual only) |
 | `conflictResolutionPolicy` | `HubWin` | Conflict resolution (`HubWin` or `MemberWin`) |
+
+> **Note:** The SQL admin username is auto-generated as `admin` + 8 random characters (e.g., `adminxyz12abc`) and displayed in the deployment output.
 
 ---
 
