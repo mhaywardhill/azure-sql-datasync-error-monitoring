@@ -145,7 +145,7 @@ param(
 )
 
 # Get logs from the last check interval
-$startTime = (Get-Date).AddHours(-1).ToString("yyyy-MM-ddTHH:mm:ssZ")
+$startTime = (Get-Date).AddMinutes(-$CheckIntervalMinutes).ToString("yyyy-MM-ddTHH:mm:ssZ")
 $endTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
 
 $errors = Get-AzSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
@@ -167,9 +167,6 @@ if ($errors) {
     
     # Optional: Send email alert
     # Send-MailMessage -To "admin@company.com" -Subject "Data Sync Errors Detected" -Body ($errors | Out-String)
-    
-    # Optional: Write to Event Log
-    # Write-EventLog -LogName Application -Source "DataSyncMonitor" -EventId 1001 -EntryType Error -Message ($errors | Out-String)
     
     exit 1
 } else {
